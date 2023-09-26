@@ -6,7 +6,8 @@ VERSION: 1.0
 
 EXAMPLES:
 
-A) CREATE AN INSTANCE
+#### A) CREATE AN INSTANCE
+
     oProxy = CREATE("sqlProxy","c:\data\company.dbc!customers")
     oProxy.remoteConnStr = "..."
     ?oProxy.localTable -> "customers"
@@ -26,13 +27,15 @@ A) CREATE AN INSTANCE
     ?oProxy.remoteTable -> "customers"
     ?oProxy.dbcPath -> ""
 
-B) ADD CURRENT ROW ON REMOTE TABLE
+#### B) ADD CURRENT ROW ON REMOTE TABLE
+
     SELECT customers
     IF NOT oProxy.insertOne()
         MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-C) ADD CUSTOM ROW ON REMOTE TABLE
+#### C) ADD CUSTOM ROW ON REMOTE TABLE
+
     SELECT customers
     SCATTER NAME oRow BLANK
     oRow.<column> = <value>
@@ -42,13 +45,15 @@ C) ADD CUSTOM ROW ON REMOTE TABLE
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-D) ADD MANY ROWS ON REMOTE TABLE USING A DATA CURSOR
+#### D) ADD MANY ROWS ON REMOTE TABLE USING A DATA CURSOR
+
     SELECT FROM customers WHERE status = 'ACTIVE' INTO CURSOR qactives
     IF NOT oProxy.insertMany("qactives")
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-E) ADD MANY ROWS ON REMOTE TABLE USING A COLLECTION
+#### E) ADD MANY ROWS ON REMOTE TABLE USING A COLLECTION
+
     SELECT customers
     oRows = CREATE("Collection")
     SCAN FOR status = "ACTIVE"
@@ -59,7 +64,8 @@ E) ADD MANY ROWS ON REMOTE TABLE USING A COLLECTION
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-F) UPDATE ONE ROW FROM LOCAL TABLE
+#### F) UPDATE ONE ROW FROM LOCAL TABLE
+
     SELECT customers
     LOCATE FOR id = "001"
     REPLACE status WITH "INACTIVE"
@@ -67,7 +73,8 @@ F) UPDATE ONE ROW FROM LOCAL TABLE
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-G) UPDATE ONE ROW MANUALLY
+#### G) UPDATE ONE ROW MANUALLY
+
     SELECT customers
     LOCATE FOR id = "001"
     SCATTER NAME oRow
@@ -76,32 +83,37 @@ G) UPDATE ONE ROW MANUALLY
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-H) UPDATE MANY ROWS
+#### H) UPDATE MANY ROWS
+
     oSets = oProxy.Where("status,lastupd","INACTIVE",DATETIME())
     oWhere = oProxy.Where("zone","001")
     IF NOT oProxy.updateMany(oSets, oWhere)
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-I) DELETE ONE ROW FROM LOCAL TABLE
+#### I) DELETE ONE ROW FROM LOCAL TABLE
+
     SELECT customers
     LOCATE FOR id = "001"
     IF NOT oProxy.deleteOne()
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-J) UPDATE ONE ROW MANUALLY
+#### J) UPDATE ONE ROW MANUALLY
+
     IF NOT oProxy.updateOne("001")
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-K) DELETE MANY ROWS
+#### K) DELETE MANY ROWS
+
     oWhere = oProxy.Where("zone","001")
     IF NOT oProxy.deleteMany(oWhere)
        MESSAGEBOX(oProxy.lastError)
     ENDIF
 
-L) GET DATA FROM ONE RECORD
+#### L) GET DATA FROM ONE RECORD
+
     oRow = oProxy.findOne("001")
     IF ISNULL(oRow)
        MESSAGEBOX("Not found!")
@@ -109,7 +121,8 @@ L) GET DATA FROM ONE RECORD
        MESSAGEBOX("Name: " + oRow.fullName)
     ENDIF
 
-M) FIND MANY ROWS
+#### M) FIND MANY ROWS
+
     oWhere = oProxy.Where("zone,status")
     oWhere.Zone = "001"
     oWhere.Status = "ACTIVE"
